@@ -68,7 +68,7 @@ A = [1 0 0 0 0 0;
      l10;
      l11+coord_Moh];
  
- %TODO: weight matrix
+ % --- WEIGHT MATRIX ---
 
  % covariance matrix of observations
 %GM18A - FEST
@@ -132,10 +132,6 @@ Q_l11 = [0.00000036 0.00000002 0.00000016;
 
 % diagonal 3x3 matrix to fill the diagonal matrix
 O = zeros(3);
-p_unit = [1 0 0; 0 1 0; 0 0 1];
-
-%P = ones(33);
-
 
 % weight matrices for baseline obs
 C_l1 =  inv(m0_l1^2 * Q_l1);
@@ -225,14 +221,13 @@ Q = [Q_l1 O O O O O O O O O O;
     ];
 %}
 
-
+A_transp = transpose(A);
 % Estimate coordinates with unit weight
 x_hat_unit_weight = A_transp * A \ A_transp*f;
 
 
 % Estimate the unknown coordinates
 
-A_transp = transpose(A);
 At_P_A = A_transp*P*A;
 At_P_f = A_transp*P*f;
 x_hat = At_P_A \ At_P_f;
