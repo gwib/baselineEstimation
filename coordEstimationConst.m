@@ -58,10 +58,10 @@ A = [1 0 0 0 0 0;
  f = [l1+coord_Fest;
      coord_Ils-coord_Fest-l2;
      l3+coord_Fest;
-     coord_Fest-coord_Moh-l4;
-     coord_Hav-coord_Ils-l5;
+     coord_Moh-coord_Fest-l4;
+     coord_Ils-coord_Hav-l5;
      l6+coord_Hav;
-     coord_Hav-coord_Moh-l7;
+     coord_Moh-coord_Hav-l7;
      l8+coord_Hav;
      coord_Ils-l9;
      l10;
@@ -69,6 +69,144 @@ A = [1 0 0 0 0 0;
  
  %TODO: weight matrix
 
+ % covariance matrix of observations
+%GM18A - FEST
+m0_l1 = 0.7522; 
+Q_l1 = [0.00000011 0.00000001 0.00000004;
+     0.00000001 0.00000005 0.00000001;
+     0.00000004 0.00000001 0.00000052]; 
+
+ % ILS - FEST
+ m0_l2 = 0.8945;
+ Q_l2 = [0.00000011 0 0.00000010;
+     0 0.00000004 0.00000001;
+     0.00000010 0.00000001 0.00000047];
+ 
+ 
+Q_l3 = [0.00000065, 0.00000001, 0.00000045;
+	0.00000001, 0.00000019,-0.00000008;
+	0.00000045,-0.00000008, 0.00000183];
+m0_l3 = 0.5887;
+
+Q_l4 = [0.00000017, 0.00000000, 0.00000009;
+	0.00000000, 0.00000006,-0.00000003;
+	0.00000009,-0.00000003, 0.00000060];
+m0_l4 = 0.6478;
+
+Q_l5 = [0.00000010, 0.00000001, 0.00000008;
+	0.00000001, 0.00000004, 0.00000002;
+	0.00000008, 0.00000002, 0.00000044];
+m0_l5 = 0.5776;
+ 
+ Q_l6 = [0.00000063, 0.00000001, 0.00000025; 
+	0.00000001, 0.00000019,-0.00000004;
+	0.00000025,-0.00000004, 0.00000198];
+m0_l6 = 0.3262;
+ 
+ Q_l7 = [0.00000018, 0.00000000, 0.00000012;
+	0.00000000, 0.00000006, 0.00000000;	   
+	0.00000012, 0.00000000, 0.00000058];
+m0_l7 = 0.2867;
+
+Q_l8 = [0.00000015, 0.00000002, 0.00000013;
+	0.00000002, 0.00000005, 0.00000005;
+	0.00000013, 0.00000005, 0.00000044];
+m0_l8 = 0.3639;
+
+m0_l9 = 0.5475;
+Q_l9 = [0.00000036 0.00000003 0.00000031;
+	0.00000003 0.00000015 0.00000016;
+	0.00000031 0.00000016 0.00000190];
+ 
+m0_l10 = 0.4336;
+Q_l10 = [0.00000026 0.00000003 0.00000004;
+	0.00000003 0.00000015 0.00000013;
+	0.00000004 0.00000013 0.00000140];
+
+m0_l11 = 0.2994;
+Q_l11 = [0.00000036 0.00000002 0.00000016;
+	0.00000002 0.00000016 -0.00000004;
+	0.00000016 -0.00000004 0.00000153];
+
+% diagonal 3x3 matrix to fill the diagonal matrix
+O = zeros(3);
+
+% weight matrices for baseline obs
+C_l1 =  inv(m0_l1^2 * Q_l1);
+C_l2 = inv(m0_l2^2 * Q_l2);
+C_l3 = inv(m0_l3^2 * Q_l3);
+C_l4 = inv(m0_l4^2 * Q_l4);
+C_l5 = inv(m0_l5^2 * Q_l5);
+C_l6 = inv(m0_l6^2 * Q_l6);
+C_l7 = inv(m0_l7^2 * Q_l7);
+C_l8 = inv(m0_l8^2 * Q_l8);
+C_l9 = inv(m0_l9^2 * Q_l9);
+C_l10 = inv(m0_l10^2 * Q_l10);
+C_l11 = inv(m0_l11^2 * Q_l11);
+
+% total weight matrix
+P = [C_l1 O O O O O O O O O O;
+    O C_l2 O O O O O O O O O;
+    O O C_l3 O O O O O O O O;
+    O O O C_l4 O O O O O O O;
+    O O O O C_l5 O O O O O O;
+    O O O O O C_l6 O O O O O;
+    O O O O O O C_l7 O O O O;
+    O O O O O O O C_l8 O O O;
+    O O O O O O O O C_l9 O O;
+    O O O O O O O O O C_l10 O;
+    O O O O O O O O O O C_l11
+    ];
+%}
+
+
+%{
+p_l1 = findP(Q_l1, m0_l1);
+p_l2 = findP(Q_l2, m0_l2);
+p_l3 = findP(Q_l3, m0_l3);
+p_l4 = findP(Q_l4, m0_l4);
+p_l5 = findP(Q_l5, m0_l5);
+p_l6 = findP(Q_l6, m0_l6);
+p_l7 = findP(Q_l7, m0_l7);
+p_l11 = findP(Q_l11, m0_l11);
+p_l10 = findP(Q_l10, m0_l10);
+p_l9  = findP(Q_l9, m0_l9);
+p_l8  = findP(Q_l8, m0_l8);
 
 
 
+
+P = [p_l1 O O O O O O O O O O;
+    O p_l2 O O O O O O O O O;
+    O O p_l3 O O O O O O O O;
+    O O O p_l4 O O O O O O O;
+    O O O O p_l5 O O O O O O;
+    O O O O O p_l6 O O O O O;
+    O O O O O O p_l7 O O O O;
+    O O O O O O O p_l8 O O O;
+    O O O O O O O O p_l9 O O;
+    O O O O O O O O O p_l10 O;
+    O O O O O O O O O O p_l11
+    ];
+
+%P = P / P(1,1);
+%}
+
+
+
+%P = P / P(1,1);
+
+%P = C;%inv(Q / Q(1,1));
+%}
+% Estimate the unknown coordinates
+
+A_transp = transpose(A);
+At_P_A = A_transp*P*A;
+At_P_f = A_transp*P*f;
+x_hat = inv(At_P_A) * At_P_f;
+
+
+function p = findP(c, m0)
+    c = c.^2;
+    p = c./m0^2;
+end
