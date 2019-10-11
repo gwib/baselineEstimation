@@ -43,16 +43,17 @@ A = [1 0 0 0 0 0;
      1 0 0 0 0 0;
      0 1 0 0 0 0;
      0 0 1 0 0 0; % v8
-     0 0 0 -1 0 0;
-     0 0 0 0 -1 0;
-     0 0 0 0 0 -1; % v9
+     0 0 0 1 0 0;
+     0 0 0 0 1 0;
+     0 0 0 0 0 1; % v9
      1 0 0 -1 0 0;
      0 1 0 0 -1 0;
      0 0 1 0 0 -1; % v10
      1 0 0 0 0 0;
      0 1 0 0 0 0;
-     0 0 1 0 0 0; % v11
+     0 0 1 0 0 0 % v11
      ];
+
  
  % f-matrix
  f = [l1+coord_Fest;
@@ -76,13 +77,14 @@ Q_l1 = [0.00000011 0.00000001 0.00000004;
      0.00000001 0.00000005 0.00000001;
      0.00000004 0.00000001 0.00000052]; 
 
- % ILS - FEST
- m0_l2 = 0.8945;
- Q_l2 = [0.00000011 0 0.00000010;
+ 
+% ILS - FEST
+m0_l2 = 0.8945;
+Q_l2 = [0.00000011 0 0.00000010;
      0 0.00000004 0.00000001;
      0.00000010 0.00000001 0.00000047];
  
- 
+
 Q_l3 = [0.00000065, 0.00000001, 0.00000045;
 	0.00000001, 0.00000019,-0.00000008;
 	0.00000045,-0.00000008, 0.00000183];
@@ -98,7 +100,7 @@ Q_l5 = [0.00000010, 0.00000001, 0.00000008;
 	0.00000008, 0.00000002, 0.00000044];
 m0_l5 = 0.5776;
  
- Q_l6 = [0.00000063, 0.00000001, 0.00000025; 
+Q_l6 = [0.00000063, 0.00000001, 0.00000025; 
 	0.00000001, 0.00000019,-0.00000004;
 	0.00000025,-0.00000004, 0.00000198];
 m0_l6 = 0.3262;
@@ -130,6 +132,10 @@ Q_l11 = [0.00000036 0.00000002 0.00000016;
 
 % diagonal 3x3 matrix to fill the diagonal matrix
 O = zeros(3);
+p_unit = [1 0 0; 0 1 0; 0 0 1];
+
+%P = ones(33);
+
 
 % weight matrices for baseline obs
 C_l1 =  inv(m0_l1^2 * Q_l1);
@@ -157,9 +163,22 @@ P = [C_l1 O O O O O O O O O O;
     O O O O O O O O O C_l10 O;
     O O O O O O O O O O C_l11
     ];
+
+%{
+P = [p_unit O O O O O O O O O O;
+    O p_unit O O O O O O O O O;
+    O O p_unit O O O O O O O O;
+    O O O p_unit O O O O O O O;
+    O O O O p_unit O O O O O O;
+    O O O O O p_unit O O O O O;
+    O O O O O O p_unit O O O O;
+    O O O O O O O p_unit O O O;
+    O O O O O O O O p_unit O O;
+    O O O O O O O O O p_unit O;
+    O O O O O O O O O O p_unit
+    ];
+
 %}
-
-
 %{
 p_l1 = findP(Q_l1, m0_l1);
 p_l2 = findP(Q_l2, m0_l2);
@@ -191,22 +210,29 @@ P = [p_l1 O O O O O O O O O O;
 
 %P = P / P(1,1);
 %}
-
-
-
-%P = P / P(1,1);
-
-%P = C;%inv(Q / Q(1,1));
+%{
+Q = [Q_l1 O O O O O O O O O O;
+    O Q_l2 O O O O O O O O O;
+    O O Q_l3 O O O O O O O O;
+    O O O Q_l4 O O O O O O O;
+    O O O O Q_l5 O O O O O O;
+    O O O O O Q_l6 O O O O O;
+    O O O O O O Q_l7 O O O O;
+    O O O O O O O Q_l8 O O O;
+    O O O O O O O O Q_l9 O O;
+    O O O O O O O O O Q_l10 O;
+    O O O O O O O O O O Q_l11
+    ];
 %}
+
+
+% Estimate coordinates with unit weight
+x_hat_unit_weight = A_transp * A \ A_transp*f;
+
+
 % Estimate the unknown coordinates
 
 A_transp = transpose(A);
 At_P_A = A_transp*P*A;
 At_P_f = A_transp*P*f;
-x_hat = inv(At_P_A) * At_P_f;
-
-
-function p = findP(c, m0)
-    c = c.^2;
-    p = c./m0^2;
-end
+x_hat = At_P_A \ At_P_f;
