@@ -160,74 +160,13 @@ P = [C_l1 O O O O O O O O O O;
     O O O O O O O O O O C_l11
     ];
 
-%{
-P = [p_unit O O O O O O O O O O;
-    O p_unit O O O O O O O O O;
-    O O p_unit O O O O O O O O;
-    O O O p_unit O O O O O O O;
-    O O O O p_unit O O O O O O;
-    O O O O O p_unit O O O O O;
-    O O O O O O p_unit O O O O;
-    O O O O O O O p_unit O O O;
-    O O O O O O O O p_unit O O;
-    O O O O O O O O O p_unit O;
-    O O O O O O O O O O p_unit
-    ];
-
-%}
-%{
-p_l1 = findP(Q_l1, m0_l1);
-p_l2 = findP(Q_l2, m0_l2);
-p_l3 = findP(Q_l3, m0_l3);
-p_l4 = findP(Q_l4, m0_l4);
-p_l5 = findP(Q_l5, m0_l5);
-p_l6 = findP(Q_l6, m0_l6);
-p_l7 = findP(Q_l7, m0_l7);
-p_l11 = findP(Q_l11, m0_l11);
-p_l10 = findP(Q_l10, m0_l10);
-p_l9  = findP(Q_l9, m0_l9);
-p_l8  = findP(Q_l8, m0_l8);
-
-
-
-
-P = [p_l1 O O O O O O O O O O;
-    O p_l2 O O O O O O O O O;
-    O O p_l3 O O O O O O O O;
-    O O O p_l4 O O O O O O O;
-    O O O O p_l5 O O O O O O;
-    O O O O O p_l6 O O O O O;
-    O O O O O O p_l7 O O O O;
-    O O O O O O O p_l8 O O O;
-    O O O O O O O O p_l9 O O;
-    O O O O O O O O O p_l10 O;
-    O O O O O O O O O O p_l11
-    ];
-
-%P = P / P(1,1);
-%}
-%{
-Q = [Q_l1 O O O O O O O O O O;
-    O Q_l2 O O O O O O O O O;
-    O O Q_l3 O O O O O O O O;
-    O O O Q_l4 O O O O O O O;
-    O O O O Q_l5 O O O O O O;
-    O O O O O Q_l6 O O O O O;
-    O O O O O O Q_l7 O O O O;
-    O O O O O O O Q_l8 O O O;
-    O O O O O O O O Q_l9 O O;
-    O O O O O O O O O Q_l10 O;
-    O O O O O O O O O O Q_l11
-    ];
-%}
-
 A_transp = transpose(A);
+
 % Estimate coordinates with unit weight
 x_hat_unit_weight = A_transp * A \ A_transp*f;
 
 
 % Estimate the unknown coordinates
-
 At_P_A = A_transp*P*A;
 At_P_f = A_transp*P*f;
 x_hat = At_P_A \ At_P_f;
