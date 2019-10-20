@@ -1,7 +1,7 @@
 clear all;
 
 % call input script that is setting up the constants
-constants;
+heightEstConstants;
 
 A_transp = transpose(A);
 
