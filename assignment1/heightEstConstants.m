@@ -22,7 +22,7 @@ A = [1 0;
     1 -1;
     1 0];
 
-% f-matrix
+% f-matrix - observations
 f = [81.1478;
     82.9108;
     82.9051;
