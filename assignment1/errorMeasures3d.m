@@ -1,6 +1,5 @@
-% TODO: Update these to 3D
 % number of independant observations
-n = 33; % number of baselines !!!! should that be 11*3??
+n = 33; % number of baselines
 %number of unknowns
 e = 6;
 
