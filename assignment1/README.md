@@ -2,16 +2,16 @@
 
 ## Task 1: 1D-modelling
 
-_heightEstConstants.m_
+__heightEstConstants.m__ <br>
 setting up P,A and f-matrix for height estimations
 
-_heightEstimations.m_
+__heightEstimations.m__ <br>
 - Estimating heights and corrections based on previously set up constants
 - Error measures for height estimations
 
 ## Task 2: 3D-modelling
 
-_coordEstConst.m_
+__coordEstConst.m__ <br>
 sets up constants for
 - known coordinates
 - measured baselines
@@ -24,9 +24,9 @@ Estimates coordinates
 - using weight matrix
 
 
-_errorMeasures3d.m_
+__errorMeasures3d.m__ <br>
 Errors for 3D-estimations
 
 
 ## Task 3: Simulation of unknown Heights
-_heightSim.m_
+__heightSim.m__
