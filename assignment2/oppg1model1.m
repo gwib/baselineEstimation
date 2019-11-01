@@ -160,9 +160,9 @@ xi = 2*x_hat(1)*moh(1) + x_hat(2)*moh(2) + x_hat(4);
 eta = x_hat(2)*moh(1) + 2*x_hat(3)*moh(2) + x_hat(5);
 
 % Geoid model heights for all given points
-geoidHeights = zeros(21,1);
+geoidHeightsModel1 = zeros(21,1);
 for i = 1:21
-    geoidHeights(i) = model1(X_E_local(i,1), X_E_local(i,2), x_hat);
+    geoidHeightsModel1(i) = model1(X_E_local(i,1), X_E_local(i,2), x_hat);
 end
 
 % ellipsoidic heights from table in assignment text
@@ -196,6 +196,12 @@ H_given = [
 ];
 
 % orthmetric heights
-H_est = transpose(h) - geoidHeights;
+H_est = transpose(h) - geoidHeightsModel1;
 
 delta_H_est = H_est - H_given;
+
+v_hatGeoid = geoidHeightsModel1 - f;
+
+
+% Stanndard deviation of chosen geoid model
+sd_hat_0 = sqrt((transpose(v_hatGeoid)*P*v_hatGeoid)/(n-e));
